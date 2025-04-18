@@ -1,0 +1,168 @@
+
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Timeline Interattiva Completa</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #e0f7fa;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .timeline-container {
+      display: flex;
+      align-items: center;
+      background: white;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      width: 95%;
+      max-width: 1400px;
+      overflow: hidden;
+    }
+
+    .arrow {
+      background-color: #00838f;
+      color: white;
+      border: none;
+      border-radius: 50%;
+      font-size: 28px;
+      width: 48px;
+      height: 48px;
+      cursor: pointer;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 2;
+    }
+
+    .arrow:hover {
+      background-color: #006064;
+    }
+
+    .timeline-wrapper {
+      overflow-x: hidden;
+      flex: 1;
+    }
+
+    .timeline {
+      display: flex;
+      align-items: flex-start;
+      padding: 10px 0;
+      width: max-content;
+      position: relative;
+      transition: transform 0.5s ease;
+    }
+
+    .event {
+      flex: 0 0 auto;
+      margin: 0 40px;
+      text-align: center;
+      position: relative;
+      min-width: 300px;
+      max-width: 300px;
+      transition: transform 0.3s;
+    }
+
+    .event-circle {
+      width: 16px;
+      height: 16px;
+      background-color: #00796b;
+      border-radius: 50%;
+      margin: 12px auto;
+    }
+
+    .event-label {
+      font-size: 16px;
+      font-weight: bold;
+      margin-bottom: 10px;
+      color: #006064;
+    }
+
+    .event-description {
+      font-size: 14px;
+      color: #455a64;
+      line-height: 1.4;
+      text-align: center;
+    }
+
+    .timeline-line {
+      position: absolute;
+      top: 36px;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background-color: #b2ebf2;
+      z-index: -1;
+    }
+
+    .event.active .event-circle {
+      background-color: #ff8f00;
+    }
+
+    .event.active .event-label {
+      color: #ff8f00;
+    }
+  </style>
+</head>
+<body>
+  <div class="timeline-container">
+    <button class="arrow" onclick="scrollTimeline(-1)">&#10094;</button>
+    <div class="timeline-wrapper" id="timeline-wrapper">
+      <div class="timeline" id="timeline">
+        <div class="timeline-line"></div>
+
+        <div class="event"><div class="event-circle"></div><div class="event-label">X-XI SECOLO</div><div class="event-description">Mulini a marea in spiaggia o al porto...</div></div>
+        <div class="event"><div class="event-circle"></div><div class="event-label">MEDIOEVO</div><div class="event-description">Il rapporto tra maree e architettura...</div></div>
+        <div class="event"><div class="event-circle"></div><div class="event-label">1799</div><div class="event-description">Energia meccanica dalle onde...</div></div>
+        <div class="event"><div class="event-circle"></div><div class="event-label">1910</div><div class="event-description">Luci dal mare...</div></div>
+        <div class="event"><div class="event-circle"></div><div class="event-label">1940</div><div class="event-description">Sfruttare l'oscillazione delle onde...</div></div>
+        <div class="event"><div class="event-circle"></div><div class="event-label">1966</div><div class="event-description">La centrale delle maree...</div></div>
+        <div class="event"><div class="event-circle"></div><div class="event-label">1974</div><div class="event-description">L'anatra elettrica...</div></div>
+        <div class="event"><div class="event-circle"></div><div class="event-label">1981</div><div class="event-description">Il calore del mare...</div></div>
+        <div class="event"><div class="event-circle"></div><div class="event-label">1991</div><div class="event-description">La spinta dell'Unione Europea...</div></div>
+        <div class="event"><div class="event-circle"></div><div class="event-label">1998</div><div class="event-description">Una turbina idraulica per lo Stretto...</div></div>
+        <div class="event"><div class="event-circle"></div><div class="event-label">2010</div><div class="event-description">Scozia, pioniere dell'energia marina...</div></div>
+        <div class="event"><div class="event-circle"></div><div class="event-label">2015</div><div class="event-description">Energia elettrica dalle onde...</div></div>
+        <div class="event"><div class="event-circle"></div><div class="event-label">2016</div><div class="event-description">... e dalle maree...</div></div>
+
+      </div>
+    </div>
+    <button class="arrow" onclick="scrollTimeline(1)">&#10095;</button>
+  </div>
+
+  <script>
+    let currentIndex = 0;
+    const events = document.querySelectorAll('.event');
+    const wrapper = document.getElementById('timeline-wrapper');
+
+    function updateActiveEvent() {
+      events.forEach((event, index) => {
+        event.classList.toggle('active', index === currentIndex);
+      });
+
+      const eventWidth = events[0].offsetWidth + 80;
+      wrapper.scrollTo({
+        left: currentIndex * eventWidth - wrapper.clientWidth / 2 + eventWidth / 2,
+        behavior: 'smooth'
+      });
+    }
+
+    function scrollTimeline(direction) {
+      const maxIndex = events.length - 1;
+      currentIndex = Math.max(0, Math.min(currentIndex + direction, maxIndex));
+      updateActiveEvent();
+    }
+
+    updateActiveEvent();
+  </script>
+</body>
+</html>
