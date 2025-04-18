@@ -1,0 +1,155 @@
+
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Timeline Interattiva Completa</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #e0f7fa;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .timeline-container {
+      display: flex;
+      align-items: center;
+      background: white;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      width: 95%;
+      max-width: 1200px;
+      overflow: hidden;
+    }
+
+    .arrow {
+      background-color: #00838f;
+      color: white;
+      border: none;
+      border-radius: 50%;
+      font-size: 24px;
+      width: 40px;
+      height: 40px;
+      cursor: pointer;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 2;
+    }
+
+    .arrow:hover {
+      background-color: #006064;
+    }
+
+    .timeline-wrapper {
+      overflow-x: hidden;
+      flex: 1;
+    }
+
+    .timeline {
+      display: flex;
+      align-items: flex-start;
+      padding: 10px 0;
+      width: max-content;
+      position: relative;
+      transition: transform 0.5s ease;
+    }
+
+    .event {
+      flex: 0 0 auto;
+      margin: 0 30px;
+      text-align: center;
+      position: relative;
+      min-width: 250px;
+      max-width: 250px;
+      transition: transform 0.3s;
+    }
+
+    .event-circle {
+      width: 14px;
+      height: 14px;
+      background-color: #00796b;
+      border-radius: 50%;
+      margin: 10px auto;
+    }
+
+    .event-label {
+      font-size: 16px;
+      font-weight: bold;
+      margin-bottom: 8px;
+      color: #006064;
+    }
+
+    .event-description {
+      font-size: 16px;
+      color: #455a64;
+      line-height: 1.6;
+      text-align: center;
+    }
+
+    .timeline-line {
+      position: absolute;
+      top: 32px;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background-color: #b2ebf2;
+      z-index: -1;
+    }
+
+    .event.active .event-circle {
+      background-color: #ff8f00;
+    }
+
+    .event.active .event-label {
+      color: #ff8f00;
+    }
+  </style>
+</head>
+<body>
+  <div class="timeline-container">
+    <button class="arrow" onclick="scrollTimeline(-1)">&#10094;</button>
+    <div class="timeline-wrapper" id="timeline-wrapper">
+      <div class="timeline" id="timeline">
+        <div class="timeline-line"></div>
+        <!-- EVENTI QUI VERRANNO INSERITI IN SEGUITO -->
+      </div>
+    </div>
+    <button class="arrow" onclick="scrollTimeline(1)">&#10095;</button>
+  </div>
+
+  <script>
+    let currentIndex = 0;
+    const wrapper = document.getElementById('timeline-wrapper');
+
+    function updateActiveEvent() {
+      const events = document.querySelectorAll('.event');
+      events.forEach((event, index) => {
+        event.classList.toggle('active', index === currentIndex);
+      });
+
+      const eventWidth = events[0].offsetWidth + 60;
+      wrapper.scrollTo({
+        left: currentIndex * eventWidth - wrapper.clientWidth / 2 + eventWidth / 2,
+        behavior: 'smooth'
+      });
+    }
+
+    function scrollTimeline(direction) {
+      const events = document.querySelectorAll('.event');
+      const maxIndex = events.length - 1;
+      currentIndex = Math.max(0, Math.min(currentIndex + direction, maxIndex));
+      updateActiveEvent();
+    }
+
+    window.addEventListener('load', updateActiveEvent);
+  </script>
+</body>
+</html>
